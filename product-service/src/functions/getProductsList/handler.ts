@@ -6,9 +6,23 @@ import schema from './schema';
 import { products } from '../../store';
 
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
-	return formatJSONResponse({
-		products
-	});
+	try {
+		return formatJSONResponse({
+			products
+		});
+	} catch (e) {
+		return formatJSONResponse(
+			{
+				errors: [
+					{
+						message: 'Unexpected error occurred',
+						details: e.message
+					}
+				]
+			},
+			500
+		);
+	}
 };
 
 export const main = middyfy(getProductsList);
