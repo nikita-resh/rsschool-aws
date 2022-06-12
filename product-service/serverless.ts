@@ -4,7 +4,7 @@ import getProductsList from '@functions/getProductsList';
 import getProductById from '@functions/getProductById';
 
 const serverlessConfiguration: AWS = {
-	service: 'product-service-try',
+	service: 'product-service',
 	frameworkVersion: '3',
 	plugins: ['serverless-esbuild'],
 	provider: {
