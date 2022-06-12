@@ -11,7 +11,7 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async 
 			return formatJSONResponse({ errors: [{ message: 'Incorrect Id was provided' }] }, 422);
 		}
 
-		const product = products.find(product => product.productId === +id);
+		const product = products.find(product => product.id === +id);
 		if (!product) {
 			return formatJSONResponse({ errors: [{ message: 'Product not found' }] }, 404);
 		}
