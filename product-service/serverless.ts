@@ -4,13 +4,16 @@ import getProductsList from '@functions/getProductsList';
 import getProductById from '@functions/getProductById';
 
 const serverlessConfiguration: AWS = {
-	service: 'product-service',
+	service: 'product-service-try',
 	frameworkVersion: '3',
 	plugins: ['serverless-esbuild'],
 	provider: {
 		name: 'aws',
 		runtime: 'nodejs14.x',
 		region: 'eu-west-1',
+		httpApi: {
+			cors: true
+		},
 		apiGateway: {
 			minimumCompressionSize: 1024,
 			shouldStartNameWithService: true
