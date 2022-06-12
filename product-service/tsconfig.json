@@ -5,6 +5,8 @@
 		"moduleResolution": "node",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
 		"removeComments": true,
 		"sourceMap": true,
 		"target": "ES2020",

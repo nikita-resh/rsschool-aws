@@ -1,24 +1,18 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { formatJSONResponse } from '@libs/api-gateway';
-import { middyfy } from '@libs/lambda';
+import { formatJSONResponse } from '../../libs/api-gateway';
+import { middyfy } from '../../libs/lambda';
+import { findAllProducts } from '../../utils/products';
 
-import schema from './schema';
-import { products } from '../../store';
-
-const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
+export const getProductsList = async () => {
 	try {
+		const products = await findAllProducts();
 		return formatJSONResponse({
 			products
 		});
 	} catch (e) {
 		return formatJSONResponse(
 			{
-				errors: [
-					{
-						message: 'Unexpected error occurred',
-						details: e.message
-					}
-				]
+				message: 'Unexpected error occurred',
+				details: e.message
 			},
 			500
 		);
