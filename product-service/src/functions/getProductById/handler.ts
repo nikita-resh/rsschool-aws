@@ -1,19 +1,19 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { formatJSONResponse } from '@libs/api-gateway';
-import { middyfy } from '@libs/lambda';
+import { formatJSONResponse } from '../../libs/api-gateway';
+import { middyfy } from '../../libs/lambda';
 
-import schema from './schema';
-import { products } from '../../store';
+import { findProductById } from '../../utils/products';
+import { APIGatewayProxyEvent } from 'aws-lambda';
 
-const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async ({ pathParameters: { id } }) => {
+export const getProductById = async (event: APIGatewayProxyEvent) => {
+	const { id } = event.pathParameters;
 	try {
 		if (!id || typeof id !== 'string' || isNaN(Number(id))) {
 			return formatJSONResponse({ errors: [{ message: 'Incorrect Id was provided' }] }, 422);
 		}
 
-		const product = products.find(product => product.id === +id);
+		const product = await findProductById(+id);
 		if (!product) {
-			return formatJSONResponse({ errors: [{ message: 'Product not found' }] }, 404);
+			return formatJSONResponse({ message: 'Product not found' }, 404);
 		}
 
 		return formatJSONResponse({
@@ -22,12 +22,8 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async 
 	} catch (e) {
 		return formatJSONResponse(
 			{
-				errors: [
-					{
-						message: 'Unexpected error occurred',
-						details: e.message
-					}
-				]
+				message: 'Unexpected error occurred',
+				details: e.message
 			},
 			500
 		);
