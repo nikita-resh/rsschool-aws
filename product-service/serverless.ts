@@ -7,7 +7,7 @@ import swagger from '@functions/swagger';
 const serverlessConfiguration: AWS = {
 	service: 'product-service',
 	frameworkVersion: '3',
-	plugins: ['serverless-esbuild', 'serverless-webpack'],
+	plugins: ['serverless-webpack'],
 	provider: {
 		name: 'aws',
 		runtime: 'nodejs14.x',

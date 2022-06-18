@@ -45,16 +45,4 @@ describe('Get product by Id function tests', () => {
 		const { statusCode } = result;
 		expect(statusCode).toEqual(422);
 	});
-
-	// it('should return 404 error', async () => {
-	// 	const eventMock = {
-	// 		pathParameters: {
-	// 			productId: wrongId
-	// 		}
-	// 	} as unknown as APIGatewayProxyEvent;
-
-	// 	const result = await getProductById(eventMock);
-	// 	const { statusCode } = result;
-	// 	expect(statusCode).toEqual(404);
-	// });
 });
