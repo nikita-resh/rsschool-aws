@@ -1,0 +1,147 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "This is a documentation for Product Service API",
+		"version": "1.0.0",
+		"title": "Product Service",
+		"termsOfService": "http://swagger.io/terms/",
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
+	},
+	"host": "2y76f36ehe.execute-api.eu-west-1.amazonaws.com",
+	"basePath": "/dev",
+	"tags": [
+		{
+			"name": "products",
+			"description": "Products"
+		}
+	],
+	"schemes": ["https"],
+	"paths": {
+		"/products": {
+			"get": {
+				"tags": ["products"],
+				"summary": "Get all products",
+				"description": "Returns all products",
+				"operationId": "getProductsList",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"products": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Product"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/products/{productId}": {
+			"get": {
+				"tags": ["products"],
+				"summary": "Find product by Id",
+				"description": "Returns one product",
+				"operationId": "getProductById",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "productId",
+						"in": "path",
+						"default": 735,
+						"description": "ID of product to return",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"product": {
+									"$ref": "#/definitions/Product"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Product not found error",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Product not found."
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Incorrect Id",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Incorrect Id was provided"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Product": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "number",
+					"example": "735"
+				},
+				"title": {
+					"type": "string",
+					"example": "Ezreho"
+				},
+				"author": {
+					"type": "string",
+					"example": "James Brock"
+				},
+				"description": {
+					"type": "string",
+					"example": "Zarcu bil dej to le gazmemje veme ibsomi jogal zokup loffif pohfafre vu jugoc. Upsat wohero fabi gizofiuku rudla joej isakuezu buredo zu inavbok birebkif zehjat gi rocafke mol cemum tivmeg. Co zofav zip gec liczac asuru kezu sa uhasu epoaja rizaaz lic iz fapifuda upe. Tefwitmag us holsu moevzi ponu lofibo utoeclol cirtej resigneh raubcu wosrono logen jufughu."
+				},
+				"price": {
+					"type": "number",
+					"format": "int64",
+					"example": 11
+				},
+				"quantity": {
+					"type": "number",
+					"format": "int64",
+					"example": 1
+				},
+				"discount": {
+					"type": "number",
+					"format": "int64",
+					"example": 10
+				}
+			}
+		}
+	},
+	"externalDocs": {
+		"description": "Find out more about Swagger",
+		"url": "http://swagger.io"
+	}
+}
