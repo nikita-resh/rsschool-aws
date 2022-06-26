@@ -43,6 +43,76 @@
 						}
 					}
 				}
+			},
+			"post": {
+				"tags": ["products"],
+				"summary": "Create a new product",
+				"description": "Creates a new product",
+				"operationId": "createProduct",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "title",
+						"in": "body",
+						"default": "Title 1",
+						"description": "Book title",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "description",
+						"in": "body",
+						"default": "Description 1",
+						"description": "Book description",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "author",
+						"in": "body",
+						"default": "Book author 1",
+						"description": "Book author",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "price",
+						"in": "body",
+						"default": 10,
+						"description": "Book price",
+						"required": true,
+						"type": "number"
+					},
+					{
+						"name": "discount",
+						"in": "body",
+						"default": 30,
+						"description": "Discount in percents",
+						"required": true,
+						"type": "number"
+					},
+					{
+						"name": "count",
+						"in": "body",
+						"default": 5,
+						"description": "Number of books",
+						"required": true,
+						"type": "number"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"product": {
+									"$ref": "#/definitions/Product"
+								}
+							}
+						}
+					}
+				}
 			}
 		},
 		"/products/{productId}": {
@@ -108,7 +178,7 @@
 			"properties": {
 				"id": {
 					"type": "number",
-					"example": "735"
+					"example": "7b03593c-97a4-401a-837e-de8c4f19c428"
 				},
 				"title": {
 					"type": "string",
@@ -127,7 +197,7 @@
 					"format": "int64",
 					"example": 11
 				},
-				"quantity": {
+				"count": {
 					"type": "number",
 					"format": "int64",
 					"example": 1
