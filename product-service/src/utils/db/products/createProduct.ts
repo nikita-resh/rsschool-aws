@@ -1,6 +1,7 @@
 import { createProductDto } from 'src/dto/create-product.dto';
-import { IProduct as ProductBE } from 'src/models/IProduct-BE';
-import { IStock } from 'src/models/IStock-BE';
+import { IProductBE } from 'src/models/IProduct-BE';
+import { IProductFE } from 'src/models/IProduct-FE';
+import { IStock } from 'src/models/IStock';
 import { getClient } from '../db-client';
 
 const createProductRecordQuery = `
@@ -13,19 +14,26 @@ const createStockRecordQuery = `
 	($1, $2);
 `;
 
-export const createProduct = async ({ title, description, author, price, discount, count }: createProductDto) => {
+export const createProduct = async ({
+	title,
+	description,
+	author,
+	price,
+	discount,
+	count
+}: createProductDto): Promise<IProductFE> => {
 	const client = getClient();
 	await client.connect();
 
 	try {
-		const { rows: productRows } = await client.query<ProductBE>(createProductRecordQuery, [
+		const { rows: productRows } = await client.query<IProductBE>(createProductRecordQuery, [
 			title,
 			description,
 			author,
 			price,
 			discount
 		]);
-		const product: ProductBE = productRows[0];
+		const product: IProductBE = productRows[0];
 
 		const { rows: stockRows } = await client.query<IStock>(createStockRecordQuery, [product.id, count]);
 		const stock: IStock = stockRows[0];
