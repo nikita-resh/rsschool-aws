@@ -26,6 +26,8 @@ export const createProduct = async ({
 	await client.connect();
 
 	try {
+		await client.query('BEGIN');
+
 		const { rows: productRows } = await client.query<IProductBE>(createProductRecordQuery, [
 			title,
 			description,
@@ -38,9 +40,11 @@ export const createProduct = async ({
 		const { rows: stockRows } = await client.query<IStock>(createStockRecordQuery, [product.id, count]);
 		const stock: IStock = stockRows[0];
 
+		await client.query('COMMIT');
 		return { ...product, count: stock.count };
 	} catch (error) {
 		console.log('DB error: ', error);
+		await client.query('ROLLBACK');
 	} finally {
 		client.end();
 	}
