@@ -1,6 +1,6 @@
 import { formatJSONResponse } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
-import { findAllProducts } from '../../utils/products';
+import { findAllProducts } from '../../utils/db/products/findAllProducts';
 
 export const getProductsList = async () => {
 	try {
