@@ -1,13 +1,19 @@
+import { APIGatewayProxyEvent } from 'aws-lambda';
+
+import { createProductDto } from '../../dto/create-product.dto';
 import { formatJSONResponse } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
-
-import { APIGatewayProxyEvent } from 'aws-lambda';
-import { createProductDto } from 'src/dto/create-product.dto';
-import { IProductFE } from 'src/models/IProduct-FE';
-import { createProduct as createProductFunc } from 'src/utils/db/products/createProduct';
+import { IProductFE } from '../../models/IProduct-FE';
+import { createProduct as createProductFunc } from '../../utils/db/products/createProduct';
 
 export const createProduct = async (event: APIGatewayProxyEvent) => {
+	console.log('Create product!');
+	console.log('Body: ', JSON.parse(event.body));
+	console.log('Path params: ', event.pathParameters);
+	console.log('Query params: ', event.queryStringParameters);
+
 	const { title, description, author, price, discount, count }: createProductDto = JSON.parse(event.body);
+
 	if (!title || !author || !price || !discount || !count) {
 		return formatJSONResponse(
 			{

@@ -5,7 +5,12 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 import { findProductById } from '../../utils/db/products/findProductById';
 
 export const getProductById = async (event: APIGatewayProxyEvent) => {
+	console.log('Get product by Id!');
+	console.log('Path params: ', event.pathParameters);
+	console.log('Query params: ', event.queryStringParameters);
+
 	const { id } = event.pathParameters;
+
 	try {
 		if (!id || typeof id !== 'string') {
 			return formatJSONResponse({ errors: [{ message: 'Incorrect Id was provided' }] }, 422);

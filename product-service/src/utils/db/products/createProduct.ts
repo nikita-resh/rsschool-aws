@@ -1,7 +1,7 @@
-import { createProductDto } from 'src/dto/create-product.dto';
-import { IProductBE } from 'src/models/IProduct-BE';
-import { IProductFE } from 'src/models/IProduct-FE';
-import { IStock } from 'src/models/IStock';
+import { createProductDto } from '../../../dto/create-product.dto';
+import { IProductBE } from '../../../models/IProduct-BE';
+import { IProductFE } from '../../../models/IProduct-FE';
+import { IStock } from '../../../models/IStock';
 import { getClient } from '../db-client';
 
 const createProductRecordQuery = `

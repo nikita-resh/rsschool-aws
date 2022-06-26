@@ -1,8 +1,14 @@
+import { APIGatewayProxyEvent } from 'aws-lambda';
+
 import { formatJSONResponse } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
 import { findAllProducts } from '../../utils/db/products/findAllProducts';
 
-export const getProductsList = async () => {
+export const getProductsList = async (event: APIGatewayProxyEvent) => {
+	console.log('Get products list!');
+	console.log('Path params: ', event.pathParameters);
+	console.log('Query params: ', event.queryStringParameters);
+
 	try {
 		const products = await findAllProducts();
 		return formatJSONResponse({
