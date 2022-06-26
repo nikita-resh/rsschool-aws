@@ -52,52 +52,13 @@
 				"produces": ["application/json"],
 				"parameters": [
 					{
-						"name": "title",
+						"name": "body",
 						"in": "body",
-						"default": "Title 1",
-						"description": "Book title",
+						"description": "Product to be created",
 						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "description",
-						"in": "body",
-						"default": "Description 1",
-						"description": "Book description",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "author",
-						"in": "body",
-						"default": "Book author 1",
-						"description": "Book author",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "price",
-						"in": "body",
-						"default": 10,
-						"description": "Book price",
-						"required": true,
-						"type": "number"
-					},
-					{
-						"name": "discount",
-						"in": "body",
-						"default": 30,
-						"description": "Discount in percents",
-						"required": true,
-						"type": "number"
-					},
-					{
-						"name": "count",
-						"in": "body",
-						"default": 5,
-						"description": "Number of books",
-						"required": true,
-						"type": "number"
+						"schema": {
+							"$ref": "#/definitions/ProductCreate"
+						}
 					}
 				],
 				"responses": {
@@ -207,6 +168,32 @@
 					"format": "int64",
 					"example": 10
 				}
+			}
+		},
+		"ProductCreate": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"example": "Title 1",
+					"type": "string"
+				},
+				"description": {
+					"example": "Description 1",
+					"type": "string"
+				},
+				"author": {
+					"example": "Author 1",
+					"type": "string"
+				},
+				"price": {
+					"example": 10,
+					"type": "number"
+				},
+				"discount": {
+					"example": 10,
+					"type": "number"
+				},
+				"count": { "example": 10, "type": "number" }
 			}
 		}
 	},
