@@ -16,6 +16,7 @@ export const findProductById = async (id: string) => {
 		return products[0];
 	} catch (error) {
 		console.log('DB error: ', error);
+		throw error;
 	} finally {
 		client.end();
 	}

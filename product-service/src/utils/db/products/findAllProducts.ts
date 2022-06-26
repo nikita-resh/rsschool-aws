@@ -1,4 +1,4 @@
-import { IProduct } from '../../../models/IProduct-BE';
+import { IProductBE } from '../../../models/IProduct-BE';
 import { getClient } from '../db-client';
 
 const findAllProductsQuery = `
@@ -7,7 +7,7 @@ const findAllProductsQuery = `
 		JOIN stocks s ON p.id = s.product_id;
 `;
 
-export const findAllProducts = async (): Promise<IProduct[]> => {
+export const findAllProducts = async (): Promise<IProductBE[]> => {
 	const client = getClient();
 	await client.connect();
 
@@ -17,6 +17,7 @@ export const findAllProducts = async (): Promise<IProduct[]> => {
 		return products;
 	} catch (error) {
 		console.log('DB error: ', error);
+		throw error;
 	} finally {
 		client.end();
 	}

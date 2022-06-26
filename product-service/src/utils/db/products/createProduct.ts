@@ -6,12 +6,14 @@ import { getClient } from '../db-client';
 
 const createProductRecordQuery = `
   INSERT INTO products (title, description, author, price, discount) VALUES
-  ($1, $2, $3, $4, $5);
+  ($1, $2, $3, $4, $5)
+	RETURNING *;
 `;
 
 const createStockRecordQuery = `
 	INSERT INTO stocks (product_id, count) VALUES
-	($1, $2);
+	($1, $2)
+	RETURNING *;
 `;
 
 export const createProduct = async ({
@@ -45,6 +47,7 @@ export const createProduct = async ({
 	} catch (error) {
 		console.log('DB error: ', error);
 		await client.query('ROLLBACK');
+		throw error;
 	} finally {
 		client.end();
 	}
