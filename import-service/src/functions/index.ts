@@ -1,1 +1,1 @@
-export { default as getRes } from './getRes';
+export { default as importF } from './import';

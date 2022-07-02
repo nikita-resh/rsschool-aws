@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import getRes from '@functions/getRes';
+import importF from '@functions/import';
 
 const serverlessConfiguration: AWS = {
 	service: 'import-service',
@@ -17,13 +17,25 @@ const serverlessConfiguration: AWS = {
 			minimumCompressionSize: 1024,
 			shouldStartNameWithService: true
 		},
+		iamRoleStatements: [
+			{
+				Effect: 'Allow',
+				Action: ['s3:listBucket'],
+				Resource: ['arn:aws:s3:::bookly-file-store']
+			},
+			{
+				Effect: 'Allow',
+				Action: ['s3:*'],
+				Resource: ['arn:aws:s3:::bookly-file-store/*']
+			}
+		],
 		environment: {
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
 		}
 	},
 	// import the function via paths
-	functions: { getRes },
+	functions: { importF },
 	package: { individually: true },
 	custom: {
 		esbuild: {
