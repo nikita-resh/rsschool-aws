@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 import importF from '@functions/import';
+import importFileParser from '@functions/importFileParser';
 
 const serverlessConfiguration: AWS = {
 	service: 'import-service',
@@ -35,7 +36,7 @@ const serverlessConfiguration: AWS = {
 		}
 	},
 	// import the function via paths
-	functions: { importF },
+	functions: { importF, importFileParser },
 	package: { individually: true },
 	custom: {
 		esbuild: {
