@@ -6,10 +6,20 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const BUCKET = 'bookly-file-store';
 
-export const importF = async (event: APIGatewayProxyEvent) => {
+export const importProductsFile = async (event: APIGatewayProxyEvent) => {
 	const s3 = new AWS.S3({ region: 'eu-west-1' });
 
 	const { name } = event.queryStringParameters;
+
+	if (!name.endsWith('.csv')) {
+		return formatJSONResponse(
+			{
+				message: 'Unexpected error occurred',
+				details: 'File format must be .csv'
+			},
+			422
+		);
+	}
 
 	const params = {
 		Bucket: BUCKET,
@@ -32,4 +42,4 @@ export const importF = async (event: APIGatewayProxyEvent) => {
 	}
 };
 
-export const main = middyfy(importF);
+export const main = middyfy(importProductsFile);
