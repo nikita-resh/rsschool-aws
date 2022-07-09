@@ -6,6 +6,8 @@ import { formatJSONResponse } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
 
 export const importFileParser = async (event: S3Event) => {
+	const SQS = new AWS.SQS();
+
 	for (const record of event.Records) {
 		const {
 			awsRegion,
@@ -32,6 +34,21 @@ export const importFileParser = async (event: S3Event) => {
 						.pipe(csv())
 						.on('data', data => {
 							results.push(data);
+
+							SQS.sendMessage(
+								{
+									QueueUrl: process.env.IMPORT_QUEUE_URL,
+									MessageBody: JSON.stringify(data),
+									DelaySeconds: 10
+								},
+								(error, data) => {
+									if (error) {
+										console.log(error);
+										return;
+									}
+									console.log('Message sent', data);
+								}
+							);
 						})
 						.on('error', err => {
 							console.log(err);

@@ -1,7 +1,11 @@
 import type { AWS } from '@serverless/typescript';
+import * as dotenv from 'dotenv';
 
 import importProductsFile from '@functions/import';
 import importFileParser from '@functions/importFileParser';
+import catalogBatchProcess from '@functions/catalogBatchProcess';
+
+dotenv.config();
 
 const serverlessConfiguration: AWS = {
 	service: 'import-service',
@@ -28,16 +32,43 @@ const serverlessConfiguration: AWS = {
 				Effect: 'Allow',
 				Action: ['s3:*'],
 				Resource: ['arn:aws:s3:::bookly-file-store/*']
+			},
+			{
+				Effect: 'Allow',
+				Action: 'sqs:*',
+				Resource: [
+					{
+						'Fn::GetAtt': ['catalogItemsQueue', 'Arn']
+					}
+				]
 			}
 		],
 		environment: {
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
+			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+			PG_HOST: process.env.PG_HOST,
+			PG_PORT: process.env.PG_PORT,
+			PG_DATABASE: process.env.PG_DATABASE,
+			PG_USERNAME: process.env.PG_USERNAME,
+			PG_PASSWORD: process.env.PG_PASSWORD,
+			IMPORT_QUEUE_URL: {
+				Ref: 'catalogItemsQueue'
+			}
 		}
 	},
 	// import the function via paths
-	functions: { importProductsFile, importFileParser },
+	functions: { importProductsFile, importFileParser, catalogBatchProcess },
 	package: { individually: true },
+	resources: {
+		Resources: {
+			catalogItemsQueue: {
+				Type: 'AWS::SQS::Queue',
+				Properties: {
+					QueueName: 'catalogItemsQueue'
+				}
+			}
+		}
+	},
 	custom: {
 		esbuild: {
 			bundle: true,
