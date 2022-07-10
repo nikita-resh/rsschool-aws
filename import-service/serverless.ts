@@ -41,6 +41,15 @@ const serverlessConfiguration: AWS = {
 						'Fn::GetAtt': ['catalogItemsQueue', 'Arn']
 					}
 				]
+			},
+			{
+				Effect: 'Allow',
+				Action: 'sns:*',
+				Resource: [
+					{
+						Ref: 'createProductTopic'
+					}
+				]
 			}
 		],
 		environment: {
@@ -53,6 +62,9 @@ const serverlessConfiguration: AWS = {
 			PG_PASSWORD: process.env.PG_PASSWORD,
 			IMPORT_QUEUE_URL: {
 				Ref: 'catalogItemsQueue'
+			},
+			SNS_TOPIC_ARN: {
+				Ref: 'createProductTopic'
 			}
 		}
 	},
@@ -65,6 +77,18 @@ const serverlessConfiguration: AWS = {
 				Type: 'AWS::SQS::Queue',
 				Properties: {
 					QueueName: 'catalogItemsQueue'
+				}
+			},
+			createProductTopic: {
+				Type: 'AWS::SNS::Topic',
+				Properties: {
+					TopicName: 'createProductTopic',
+					Subscription: [
+						{
+							Protocol: 'email',
+							Endpoint: process.env.EMAIL_ENDPOINT
+						}
+					]
 				}
 			}
 		}
