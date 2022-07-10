@@ -3,24 +3,34 @@ import { middyfy } from '../../libs/lambda';
 
 import { SQSEvent } from 'aws-lambda';
 import AWS from 'aws-sdk';
+import Joi from 'joi';
 import { createProduct } from '../../utils/db/products/createProduct';
+
+const productValidationSchema = Joi.object({
+	title: Joi.string().required(),
+	description: Joi.string(),
+	author: Joi.string().required(),
+	price: Joi.number().required(),
+	discount: Joi.number().required(),
+	count: Joi.number().min(0).required()
+});
 
 export const catalogBatchProcess = async (event: SQSEvent) => {
 	const SNS = new AWS.SNS();
 
 	try {
 		const products = event.Records.map(({ body }) => JSON.parse(body));
+
 		const result = await Promise.all(
-			products.map(product =>
-				createProduct({
-					title: String(product.title),
-					description: String(product.description),
-					author: String(product.author),
-					price: Number(product.price),
-					discount: Number(product.discount),
-					count: Number(product.count)
-				})
-			)
+			products.map(product => {
+				const { value: transformedProduct, error } = productValidationSchema.validate(product);
+
+				if (error) {
+					return formatJSONResponse({ message: error.cause, details: error.details }, 422);
+				}
+
+				return createProduct(transformedProduct);
+			})
 		);
 
 		const promiseWrapper = () =>
