@@ -15,6 +15,5 @@ const dbOptions = {
 };
 
 export const getClient = () => {
-	console.log(dbOptions);
 	return new Client(dbOptions);
 };

@@ -54,6 +54,7 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
 		await promiseWrapper();
 
 		console.log('Successfully imported products', result);
+		return formatJSONResponse({ message: 'Successfully imported products' }, 200);
 	} catch (err) {
 		console.log(err);
 		return formatJSONResponse(

@@ -1,5 +1,3 @@
-// import AWSMock from 'aws-sdk-mock';
-
 import { importProductsFile } from '../src/functions/import/handler';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
