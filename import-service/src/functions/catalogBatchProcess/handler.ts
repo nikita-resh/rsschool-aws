@@ -39,7 +39,13 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
 					{
 						Subject: 'New books!',
 						Message: JSON.stringify(products),
-						TopicArn: process.env.SNS_TOPIC_ARN
+						TopicArn: process.env.SNS_TOPIC_ARN,
+						MessageAttributes: {
+							shipmentType: {
+								DataType: 'String',
+								StringValue: products.length > 1 ? 'Big' : 'Small'
+							}
+						}
 					},
 					(error, data) => {
 						if (error) {

@@ -82,13 +82,33 @@ const serverlessConfiguration: AWS = {
 			createProductTopic: {
 				Type: 'AWS::SNS::Topic',
 				Properties: {
-					TopicName: 'createProductTopic',
-					Subscription: [
-						{
-							Protocol: 'email',
-							Endpoint: process.env.EMAIL_ENDPOINT
-						}
-					]
+					TopicName: 'createProductTopic'
+				}
+			},
+			SNSBigShipment: {
+				Type: 'AWS::SNS::Subscription',
+				Properties: {
+					Protocol: 'email',
+					Endpoint: process.env.EMAIL_ENDPOINT_1,
+					TopicArn: {
+						Ref: 'createProductTopic'
+					},
+					FilterPolicy: {
+						shipmentType: ['Big']
+					}
+				}
+			},
+			SNSSmallShipment: {
+				Type: 'AWS::SNS::Subscription',
+				Properties: {
+					Protocol: 'email',
+					Endpoint: process.env.EMAIL_ENDPOINT_2,
+					TopicArn: {
+						Ref: 'createProductTopic'
+					},
+					FilterPolicy: {
+						shipmentType: ['Small']
+					}
 				}
 			}
 		}
