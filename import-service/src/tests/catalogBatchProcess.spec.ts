@@ -1,5 +1,10 @@
-import { catalogBatchProcess } from '../src/functions/catalogBatchProcess/handler';
 import { APIGatewayProxyResult, SQSEvent, SQSRecord } from 'aws-lambda';
+import AWS from 'aws-sdk';
+import AWSMock from 'aws-sdk-mock';
+
+jest.mock('../utils/db/products/createProduct');
+
+import * as catalogBatchProcess from '../functions/catalogBatchProcess/handler';
 
 const recordBase: SQSRecord = {
 	messageId: '69e657f2-b159-4cf1-abd1-d8b11f1cca2f',
@@ -28,11 +33,16 @@ const recordBase: SQSRecord = {
 
 describe('importProductsFile', () => {
 	it('Should create product', async () => {
+		AWSMock.setSDKInstance(AWS);
+		AWSMock.mock('SNS', 'publish', 'success');
+
 		const event: SQSEvent = {
 			Records: [recordBase]
 		};
 
-		const { statusCode } = (await catalogBatchProcess(event)) as APIGatewayProxyResult;
+		const { statusCode } = await catalogBatchProcess.catalogBatchProcess(event);
+
+		console.log(await catalogBatchProcess.catalogBatchProcess(event));
 
 		expect(statusCode).toEqual(200);
 	});
@@ -52,7 +62,7 @@ describe('importProductsFile', () => {
 			]
 		};
 
-		const { statusCode } = (await catalogBatchProcess(event)) as APIGatewayProxyResult;
+		const { statusCode } = (await catalogBatchProcess.catalogBatchProcess(event)) as APIGatewayProxyResult;
 
 		expect(statusCode).toEqual(422);
 	});
