@@ -1,6 +1,4 @@
-// import AWSMock from 'aws-sdk-mock';
-
-import { importProductsFile } from '../src/functions/import/handler';
+import { importProductsFile } from '../functions/import/handler';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 const TEST_FILE_NAME = 'test.csv';
