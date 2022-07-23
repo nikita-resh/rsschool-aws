@@ -1,9 +1,11 @@
 import type { AWS } from '@serverless/typescript';
 
+import basicAuthorizer from '@functions/basicAuthorizer';
+
 const serverlessConfiguration: AWS = {
 	service: 'auth-service',
 	frameworkVersion: '3',
-	plugins: ['serverless-webpack'],
+	plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
 	provider: {
 		name: 'aws',
 		runtime: 'nodejs14.x',
@@ -20,7 +22,7 @@ const serverlessConfiguration: AWS = {
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
 		}
 	},
-	functions: {},
+	functions: { basicAuthorizer },
 	package: { individually: true },
 	custom: {
 		esbuild: {
