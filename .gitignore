@@ -1,3 +1,4 @@
 
 product-service/.env
 import-service/.env
+authorization-service/.env
