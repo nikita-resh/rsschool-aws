@@ -2,3 +2,4 @@
 product-service/.env
 import-service/.env
 authorization-service/.env
+bff-service/.development.env
